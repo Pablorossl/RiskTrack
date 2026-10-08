@@ -1,0 +1,49 @@
+# Sistema y editores
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Credenciales y configuración local
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+.aws/
+.codex/
+.agents/
+
+# Python y Django
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+*.sqlite3
+*.sqlite3-journal
+media/
+staticfiles/
+
+# React y herramientas JavaScript
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+
+# Archivos temporales y registros
+*.log
+tmp/
