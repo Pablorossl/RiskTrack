@@ -1,6 +1,6 @@
 # 02. Requisitos
 
-**Estado:** las obligaciones académicas están identificadas y el alcance de negocio está definido; los detalles de diseño siguen siendo propuestas. La aplicación todavía no está implementada ni se ha acreditado el cumplimiento de las obligaciones.
+**Estado:** las obligaciones académicas están identificadas y el alcance, roles, criterios de valoración, historial y reglas de seguimiento están confirmados. El modelo de datos y la base técnica siguen siendo propuestas. La aplicación todavía no está implementada ni se ha acreditado el cumplimiento de las obligaciones.
 
 **Fuente:** [instrucciones completas del PFM](../INSTRUCCIONES-PFM.md). Los identificadores siguientes son referencias internas; no sustituyen la guía ni alteran su alcance.
 
@@ -11,7 +11,7 @@
 | PFM-TEC-01 | Backend Django con modelos, vistas, plantillas, autenticación y persistencia de datos. | Recorrer un flujo real autenticado y verificar su persistencia; revisar código, modelos y plantillas. | Pendiente. |
 | PFM-TEC-02 | Una o dos vistas React que obtengan datos reales del backend. | Demostrar el consumo del backend en las vistas y en el vídeo. | Pendiente. |
 | PFM-TEC-03 | Aplicación funcional en una URL pública. | Comprobar acceso estable desde navegador y mantenerlo durante revisión y defensa. | Pendiente. |
-| PFM-TEC-04 | Repositorio GitHub público con README y commits significativos. | Verificar acceso, código completo, instrucciones reproducibles e historial progresivo. | Pendiente. |
+| PFM-TEC-04 | Repositorio GitHub público con README y commits significativos. | Verificar acceso, código completo, instrucciones reproducibles e historial progresivo. | Parcial: repositorio público disponible; código, instrucciones ejecutables e historial de desarrollo pendientes. |
 
 El apartado de entrega admite repositorio público o compartido con el equipo docente; se adopta la condición de repositorio público para cumplir también el requisito técnico mínimo. Docker es opcional y la guía no exige dominio propio.
 
@@ -19,7 +19,7 @@ El apartado de entrega admite repositorio público o compartido con el equipo do
 
 | Apartado de la guía | Ubicación de trabajo | Estado |
 | --- | --- | --- |
-| Definición del problema: contexto, carencias, impacto y solución | [01-problema.md](01-problema.md) | Definición documentada; detalle propuesto. |
+| Definición del problema: contexto, carencias, impacto y solución | [01-problema.md](01-problema.md) | Necesidad fundamentada en fuentes; escenario ilustrativo hipotético y validación funcional pendiente. |
 | Reflexión: aportación y eficiencia | [01-problema.md](01-problema.md) | Beneficios previstos documentados; evidencias pendientes. |
 | Tecnologías utilizadas y justificación | [06-arquitectura.md](06-arquitectura.md) | Django y React exigidos; arquitectura propuesta. |
 | Tipos de usuarios y acciones permitidas | [03-usuarios.md](03-usuarios.md) | Roles y permisos confirmados; implementación pendiente. |
@@ -30,10 +30,10 @@ El apartado de entrega admite repositorio público o compartido con el equipo do
 
 Las funciones de esta tabla desarrollan el ciclo previsto para RiskTrack.
 
-| ID | Función | Criterio de aceptación propuesto | Caso de uso |
+| ID | Función | Criterio de aceptación | Caso de uso |
 | --- | --- | --- | --- |
 | RF-01 | Identificar y centralizar riesgos de TI. | Crear un riesgo con título y descripción y consultarlo en el registro tras recargar. | CU-G01. |
-| RF-02 | Evaluar probabilidad e impacto. | Guardar enteros entre 1 y 5 según los descriptores y el horizonte propuestos; exigir justificación, calcular la puntuación en el backend y conservar cada evaluación. | CU-G02. |
+| RF-02 | Evaluar probabilidad e impacto. | Guardar enteros entre 1 y 5 según los descriptores y el horizonte de doce meses confirmados; exigir justificación, calcular la puntuación en el backend y conservar cada evaluación. | CU-G02. |
 | RF-03 | Priorizar riesgos. | Mostrar puntuación y nivel; 4 × 5 = 20 debe figurar como CRÍTICO. Filtrar y ordenar por prioridad. | CU-G02, CU-G04. |
 | RF-04 | Asignar responsables. | Asignar un usuario activo autorizado y mostrarlo en la ficha; rechazar asignaciones inválidas. | CU-G03. |
 | RF-05 | Tratar riesgos mediante acciones. | Crear una acción vinculada al riesgo, asignarla y conservar su estado y progreso. | CU-G03, CU-R02. |
@@ -45,15 +45,15 @@ Las funciones de esta tabla desarrollan el ciclo previsto para RiskTrack.
 
 El criterio definido para el proyecto es **puntuación = probabilidad × impacto**, con clasificación del caso 4 × 5 = 20 como CRÍTICO.
 
-**Decisiones confirmadas del MVP:** una empresa, usuarios internos, tres roles, dos vistas React, cierre desde MONITORIZACIÓN con puntuación de 1 a 11 y las demás condiciones descritas, sin cierre por aceptación de riesgo elevado ni reapertura. Las acciones se crearán con progreso 0% y su progreso solo se actualizará en EN TRATAMIENTO. Los descriptores y el horizonte de valoración siguen siendo propuestas hasta su confirmación. Estas reglas son internas del proyecto; no representan una política aprobada por una empresa ni controles implementados.
+**Decisiones confirmadas del MVP:** una empresa, usuarios internos, tres roles, dos vistas React, cierre desde MONITORIZACIÓN con puntuación de 1 a 11 y las demás condiciones descritas, sin cierre por aceptación de riesgo elevado ni reapertura. Las acciones se crearán con progreso 0% y su progreso solo se actualizará en EN TRATAMIENTO. Están confirmados los descriptores, la escala de 1 a 5, el horizonte de doce meses, los umbrales de prioridad, la conservación de evaluaciones e historial y la nota obligatoria por avance. Estas reglas son internas del proyecto; no representan una política aprobada por una empresa ni controles implementados.
 
 ### Horizonte y criterios de valoración
 
-Se propone valorar la posibilidad de que ocurra la situación descrita durante los **doce meses posteriores a cada evaluación**, considerando los controles existentes en ese momento. Las acciones todavía pendientes no se contabilizarán como medidas efectivas. Cada reevaluación utilizará el mismo horizonte de doce meses desde su propia fecha.
+Se valorará la posibilidad de que ocurra la situación descrita durante los **doce meses posteriores a cada evaluación**, considerando los controles existentes en ese momento. Las acciones todavía pendientes no se contabilizarán como medidas efectivas. Cada reevaluación utilizará el mismo horizonte de doce meses desde su propia fecha.
 
 Probabilidad e impacto serán enteros de 1 a 5. La probabilidad expresa una estimación cualitativa de ocurrencia durante ese horizonte; el impacto expresa la gravedad de las consecuencias si ocurre. Los valores no equivalen a porcentajes ni a importes económicos.
 
-| Valor | Probabilidad propuesta | Criterio orientativo |
+| Valor | Probabilidad | Criterio orientativo |
 | --- | --- | --- |
 | 1 | Muy improbable | La ocurrencia requeriría circunstancias excepcionales y existen controles que dificultan claramente el escenario. |
 | 2 | Improbable | El escenario es posible, pero las condiciones conocidas y los controles existentes hacen poco esperable su ocurrencia. |
@@ -61,7 +61,7 @@ Probabilidad e impacto serán enteros de 1 a 5. La probabilidad expresa una esti
 | 4 | Probable | Hay condiciones favorables a la ocurrencia, como debilidades relevantes de control o antecedentes comparables que deben explicarse. |
 | 5 | Muy probable | Las condiciones que facilitan la ocurrencia están presentes de forma persistente y los controles resultan ausentes o claramente insuficientes. |
 
-| Valor | Impacto propuesto | Consecuencia orientativa |
+| Valor | Impacto | Consecuencia orientativa |
 | --- | --- | --- |
 | 1 | Insignificante | Afectación puntual, sin interrupción relevante de la actividad ni compromiso significativo de la información. |
 | 2 | Menor | Afectación limitada a una tarea o servicio no esencial, recuperable con los procedimientos habituales. |
@@ -69,13 +69,13 @@ Probabilidad e impacto serán enteros de 1 a 5. La probabilidad expresa una esti
 | 4 | Grave | Interrupción importante de un proceso esencial o compromiso significativo de información sensible. |
 | 5 | Crítico | Afectación que compromete la continuidad de una actividad esencial o produce consecuencias de gran alcance sobre la información de la empresa. |
 
-La justificación será obligatoria y explicará por separado la elección de probabilidad e impacto, las condiciones y controles considerados y la información utilizada. Cuando concurran consecuencias de varios niveles, se elegirá el mayor nivel aplicable y se explicará el criterio. La ausencia de información suficiente no se resolverá asignando automáticamente el valor 1: el riesgo podrá permanecer SIN EVALUAR hasta disponer de una valoración justificable.
+La justificación será un único campo de texto obligatorio que explique la elección de probabilidad e impacto, las condiciones y controles considerados y la información utilizada. Cuando concurran consecuencias de varios niveles, se elegirá el mayor nivel aplicable y se explicará el criterio. La ausencia de información suficiente no se resolverá asignando automáticamente el valor 1: el riesgo podrá permanecer SIN EVALUAR hasta disponer de una valoración justificable.
 
 Estos descriptores permiten preparar una demostración académica. Su adaptación a tiempos de interrupción, pérdidas u otros límites propios de una empresa requeriría validación con esa organización.
 
 ### Puntuación y prioridad
 
-| Puntuación | Nivel propuesto |
+| Puntuación | Nivel confirmado |
 | --- | --- |
 | 1–5 | BAJO |
 | 6–11 | MEDIO |
@@ -92,13 +92,13 @@ El gestor o administrador podrá reevaluar mientras el riesgo esté abierto. La 
 
 Una evaluación vigente será **apta para cierre** cuando se registre después de la última entrada en MONITORIZACIÓN y después del último cambio de título, descripción o responsable del riesgo. Cualquier cambio posterior de esos datos exigirá otra evaluación antes del cierre. Si se vuelve a tratamiento y después a monitorización, será necesaria una nueva evaluación en ese nuevo ciclo.
 
-El horizonte de doce meses expresa el periodo analizado; no constituye una fecha de caducidad. El MVP propuesto no incorpora vencimiento automático ni revisiones periódicas programadas. La aptitud para cierre se determinará mediante el orden de las operaciones registradas, sin permitir fechas de evaluación introducidas por el cliente.
+El horizonte de doce meses expresa el periodo analizado; no constituye una fecha de caducidad. El MVP no incorpora vencimiento automático ni revisiones periódicas programadas. La aptitud para cierre se determinará mediante el orden de las operaciones registradas, sin permitir fechas de evaluación introducidas por el cliente.
 
 ### Estados y transiciones del riesgo
 
-Los estados propuestos son **IDENTIFICADO, EVALUADO, EN TRATAMIENTO, MONITORIZACIÓN y CERRADO**. La asignación y la priorización son operaciones, no estados adicionales. El gestor o administrador iniciará las operaciones de transición; el responsable de una acción no podrá cambiar por sí mismo el estado del riesgo.
+Los estados del MVP son **IDENTIFICADO, EVALUADO, EN TRATAMIENTO, MONITORIZACIÓN y CERRADO**. La asignación y la priorización son operaciones, no estados adicionales. El gestor o administrador iniciará las operaciones de transición; el responsable de una acción no podrá cambiar por sí mismo el estado del riesgo.
 
-| Origen | Destino | Condiciones propuestas |
+| Origen | Destino | Condiciones de transición |
 | --- | --- | --- |
 | Creación | IDENTIFICADO | Título y descripción válidos; todavía sin evaluación. |
 | IDENTIFICADO | EVALUADO | Registro de la primera evaluación válida en la misma operación. |
@@ -116,6 +116,12 @@ El progreso de una acción será un entero entre 0 y 100 y determinará su estad
 Las acciones se crearán con progreso 0% y estado PENDIENTE. El gestor o administrador podrá prepararlas, asignarlas y editar título, descripción, encargado y fecha objetivo en EVALUADO y EN TRATAMIENTO. La actualización del progreso y las notas de avance solo se permitirá en EN TRATAMIENTO, también para gestor y administrador. El responsable solo podrá actualizar el progreso y las notas de sus propias acciones en ese estado. Así se evita completar todas las acciones en EVALUADO y bloquear la entrada en tratamiento, que exige al menos una acción pendiente.
 
 En MONITORIZACIÓN las acciones quedarán bloqueadas para cambios; el gestor o administrador deberá devolver el riesgo a EN TRATAMIENTO antes de incorporar acciones o revisar su progreso. En CERRADO tampoco se permitirán cambios.
+
+### Historial y notas de avance
+
+Cada avance exigirá una nota de texto no vacía que explique el trabajo realizado o la corrección, también al alcanzar el 100%. El backend rechazará notas vacías o formadas solo por espacios, sin modificar el progreso ni registrar un avance parcial. Cada nota se conservará junto con acción, actor, fecha del servidor y progreso anterior y nuevo; los avances posteriores no la sobrescribirán.
+
+El historial se registrará automáticamente para creación y edición del riesgo, evaluaciones, asignaciones, creación y edición de acciones, avances, transiciones y cierre. Conservará actor, fecha y detalle del cambio, con valores anteriores y nuevos y referencias a acción o evaluación cuando corresponda. Las entradas anteriores no se editarán ni borrarán mediante operaciones de negocio. Se mantendrán disponibles al cerrar el riesgo o desactivar usuarios y tendrán el mismo alcance de consulta que la ficha. El detalle de las operaciones figura en [08-decisiones-mvp.md](08-decisiones-mvp.md).
 
 ### Condiciones de cierre
 
@@ -142,15 +148,18 @@ Un riesgo CERRADO quedará disponible para consulta, conservará su historial y 
 | Crear una acción en EVALUADO. | Acción PENDIENTE con progreso 0%, preparada para iniciar tratamiento. |
 | Actualizar progreso o notas de avance en EVALUADO, incluso como gestor o administrador. | Rechazo sin modificar la acción ni registrar un avance. |
 | Última acción pasa a 100% en EN TRATAMIENTO. | Acción COMPLETADA; el riesgo permanece EN TRATAMIENTO hasta una transición explícita. |
+| Avance con nota vacía o formada solo por espacios. | Rechazo sin modificar progreso ni guardar un avance parcial. |
+| Segundo avance válido de una acción. | Se conserva la nota anterior y se añade el nuevo avance con autor, fecha y valores. |
+| Nueva evaluación justificada de un riesgo abierto. | Se conserva la evaluación anterior y la nueva pasa a ser la vigente. |
 | Cierre con acciones completas y puntuación 10, pero evaluación anterior a la última entrada en MONITORIZACIÓN. | Rechazo por falta de reevaluación apta para cierre. |
 | Cierre con puntuación 10 y reevaluación posterior a monitorización, seguido de un cambio de descripción. | Rechazo hasta registrar otra evaluación posterior a ese cambio. |
 | Cierre con reevaluación apta de puntuación 12 o 20. | Rechazo por nivel ALTO o CRÍTICO. |
 | Cierre con reevaluación apta de puntuación 10, responsable activo, acciones completas y motivo. | Cierre registrado con evaluación de referencia e historial conservado. |
 | Actualización de una acción en MONITORIZACIÓN o petición de cierre desde el rol Responsable. | Rechazo por estado o permiso, respectivamente. |
 
-Estos ejemplos describen criterios de aceptación de la propuesta; su ejecución y sus evidencias siguen pendientes.
+Estos ejemplos describen el comportamiento requerido para el MVP; su ejecución y sus evidencias siguen pendientes.
 
-## Requisitos no funcionales y límites propuestos
+## Requisitos no funcionales y límites del MVP
 
 | ID | Requisito de diseño | Comprobación prevista |
 | --- | --- | --- |
@@ -176,3 +185,5 @@ La entrega debe incluir cuatro elementos imprescindibles: repositorio GitHub con
 | Reflexión y valor aportado | 10% |
 
 La guía completa contiene las condiciones de revisión, autoría, defensa de hasta veinte minutos, feedback y reentrega que también deben respetarse.
+
+La correspondencia entre requisitos, documentación y evidencias de entrega se recoge en [09-verificacion-pfm.md](09-verificacion-pfm.md). La cobertura documental no acredita por sí sola la implementación ni el cumplimiento final.

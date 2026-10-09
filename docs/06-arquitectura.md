@@ -11,10 +11,11 @@ Se distinguen las tecnologías exigidas por el PFM de las propuestas de diseño.
 | Componente | Tecnología | Justificación y estado |
 | --- | --- | --- |
 | Backend | Django, obligatorio. | Modelos, vistas, plantillas, autenticación y persistencia exigidos. Centraliza reglas y permisos del ciclo de riesgos. Versión pendiente. |
-| Frontend | React, integración mínima obligatoria. | Se proponen dos vistas con datos reales: registro filtrable y dashboard de exposición. Versión pendiente. |
-| Base de datos | PostgreSQL, propuesta. | Persistencia de datos relacionados, restricciones y transacciones para mantener la integridad del ciclo de riesgos. Versión y configuración pendientes. |
-| Autenticación | Sesiones y grupos Django, propuesta. | Reutilizar autenticación y controles de acceso, con un rol de negocio por usuario. |
-| Interfaz de datos | Vistas JSON Django, propuesta. | Contratos pequeños para las dos vistas React; las reglas se mantienen en el backend. |
+| Frontend | React, integración mínima obligatoria. | Dos vistas confirmadas con datos reales: registro filtrable y dashboard de exposición. Versión pendiente. |
+| Base de datos | SQLite inicial y PostgreSQL para validación final y producción, propuesta. | Facilitar el primer arranque local y verificar restricciones, transacciones y concurrencia con el motor de despliegue. Versiones y configuración pendientes. |
+| Autenticación | Usuario estándar, sesiones y grupos Django, propuesta. | Reutilizar autenticación y controles de acceso, con un rol de negocio por usuario. |
+| Gestión de cuentas | Admin de Django adaptado, propuesta. | Reutilizar usuarios, grupos y formularios de contraseñas, con permisos limitados y validación de las reglas de desactivación. |
+| Interfaz de datos | Vistas Django con `JsonResponse`, propuesta. | Dos endpoints de lectura para React; las reglas y el filtrado se mantienen en el backend. |
 | Herramientas frontend | Vite, propuesta. | Compilar los componentes React e integrarlos como archivos estáticos; versión y dependencias pendientes. |
 | Control de versiones | Git y GitHub. | Exigidos para código completo, commits claros y repositorio de entrega. |
 | Despliegue | VPS o nube, proveedor pendiente. | URL pública estable con HTTPS durante revisión y defensa. |
@@ -39,7 +40,9 @@ Se propone servir Django y los recursos React desde el mismo origen para simplif
 
 ## Organización del código prevista
 
-La organización propuesta contempla una aplicación Django para riesgos, evaluaciones, acciones y eventos; grupos Django para roles; plantillas para operaciones; componentes React para consulta; y reglas reutilizables que apliquen permisos y transiciones a cualquier entrada.
+La organización propuesta contempla una aplicación Django para riesgos, evaluaciones, acciones y eventos; usuario estándar y grupos Django para roles; plantillas y ModelForms para operaciones; y componentes React para consulta. Se comenzará con vistas basadas en funciones y se usarán vistas genéricas cuando simplifiquen el código. Las validaciones y los métodos de los modelos conservarán las reglas reutilizables de evaluación, progreso y transiciones.
+
+La gestión de cuentas se realizará desde el admin de Django adaptado. El rol Administrador requerirá acceso al panel y permisos específicos para esa tarea, sin convertirse automáticamente en superusuario. El admin de los datos de riesgos será de consulta para evitar modificaciones que omitan las reglas de negocio. Estas recomendaciones se desarrollan en [08-decisiones-mvp.md](08-decisiones-mvp.md).
 
 Las carpetas de implementación se añadirán cuando comience el desarrollo. La documentación existente sigue en `docs/`.
 

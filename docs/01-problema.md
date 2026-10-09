@@ -62,7 +62,7 @@ Los identificadores RF y RNF remiten a [02-requisitos.md](02-requisitos.md). Las
 
 RiskTrack se plantea como una aplicación web con un registro persistente que relacione riesgos, evaluaciones, usuarios, acciones e historial. El flujo previsto es **Identificar → Evaluar → Priorizar → Asignar → Tratar → Monitorizar → Cerrar**. Cada operación deberá conservar la relación con el riesgo correspondiente y aplicar las reglas de validación y acceso definidas para el proyecto.
 
-La interfaz permitirá consultar el detalle de cada riesgo y una visión conjunta de los riesgos abiertos. El registro filtrable y el dashboard de exposición se proponen como dos vistas React que consumirán datos reales del backend Django. Las tecnologías y su justificación se desarrollan en [06-arquitectura.md](06-arquitectura.md).
+La interfaz permitirá consultar el detalle de cada riesgo y una visión conjunta de los riesgos abiertos. El alcance confirmado incluye un registro filtrable y un dashboard de exposición como dos vistas React que consumirán datos reales del backend Django. Las tecnologías y su justificación se desarrollan en [06-arquitectura.md](06-arquitectura.md).
 
 La aportación del diseño consiste en mantener conectadas la valoración, la responsabilidad y la ejecución del tratamiento. El registro central permitirá consultar esas relaciones, mientras que el historial conservará el contexto de los cambios. Las decisiones sobre la prioridad y la suficiencia de las medidas seguirán correspondiendo a las personas autorizadas.
 
@@ -82,7 +82,7 @@ Estas comprobaciones permitirán evaluar el funcionamiento de la solución. La d
 
 ## Alcance y límites del MVP
 
-El alcance confirmado comprende el registro central, la evaluación, la prioridad, la asignación, las acciones, la monitorización y el cierre. El producto mínimo viable (MVP) cubre una empresa, usuarios internos y dos vistas React, con datos ficticios para la demostración. Los roles y las condiciones de cierre y actualización de progreso están confirmados; los detalles pendientes se mantienen identificados como propuestas en los documentos de diseño.
+El alcance confirmado comprende el registro central, la evaluación, la prioridad, la asignación, las acciones, la monitorización y el cierre. El producto mínimo viable (MVP) cubre una empresa, usuarios internos y dos vistas React, con datos ficticios para la demostración. Los roles, los criterios de valoración e historial y las condiciones de cierre y actualización de progreso están confirmados; los detalles pendientes se mantienen identificados como propuestas en los documentos de diseño.
 
 Quedan fuera del MVP la gestión de múltiples empresas, los adjuntos, las notificaciones, los módulos de cumplimiento normativo, las auditorías formales, las integraciones externas y la ejecución automatizada de medidas técnicas. La aplicación documentará y seguirá las acciones que se registren; su implantación en sistemas externos queda fuera del alcance.
 
@@ -93,9 +93,9 @@ La puntuación prevista servirá como criterio de priorización dentro del model
 El siguiente caso ficticio permite relacionar el problema con el funcionamiento previsto:
 
 1. El gestor registra «Acceso no autorizado a sistemas críticos», con la descripción de la situación que debe tratarse.
-2. Introduce probabilidad **4** e impacto **5**, en las escalas propuestas de 1 a 5, junto con su justificación. La puntuación calculada es **4 × 5 = 20**, clasificada como **CRÍTICO** según el criterio definido para el ejemplo.
-3. Asigna el riesgo a **Laura — IT Security Manager** y crea la acción «Implementar MFA para cuentas privilegiadas», con encargado y fecha objetivo.
-4. La persona encargada actualiza el progreso de la acción. Su finalización queda registrada sin modificar automáticamente la valoración del riesgo.
+2. Introduce probabilidad **4** e impacto **5**, en las escalas confirmadas de 1 a 5, junto con su justificación. La puntuación calculada es **4 × 5 = 20**, clasificada como **CRÍTICO** según los umbrales del MVP.
+3. Asigna el riesgo a **Laura — IT Security Manager** y crea la acción «Implementar MFA para cuentas privilegiadas» con progreso 0%, encargado y fecha objetivo. Solicita iniciar el tratamiento tras comprobar las condiciones de transición.
+4. La persona encargada actualiza el progreso de la acción en EN TRATAMIENTO con una nota obligatoria por avance. Cada avance conserva su autor, fecha, progreso anterior y nuevo y nota. Su finalización queda registrada sin modificar automáticamente la valoración del riesgo.
 5. El gestor pasa a monitorización tras completar las acciones y registra una nueva evaluación, justificada a partir del resultado del tratamiento, conservando la anterior. Los nuevos valores quedan pendientes de esa valoración; no se presupone una reducción.
 6. El gestor revisa las [condiciones confirmadas de cierre](02-requisitos.md), incluida una reevaluación apta de nivel BAJO o MEDIO. Si procede cerrar, documenta el motivo y conserva el historial para consulta; en caso contrario, mantiene la monitorización o vuelve a tratamiento.
 

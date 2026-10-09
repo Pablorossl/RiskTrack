@@ -4,9 +4,9 @@ RiskTrack es un Proyecto Final de Máster en Desarrollo Full Stack orientado a r
 
 ## Estado del proyecto
 
-Actualmente están documentados el problema, el alcance y una propuesta de diseño. El repositorio contiene este README, las instrucciones del PFM, las instrucciones de trabajo, los documentos de `docs/` y el archivo `.gitignore`. Todavía no contiene código de la aplicación, dependencias, pruebas ni configuración de despliegue.
+Actualmente están documentados el problema, el alcance confirmado y una propuesta de diseño técnico. El repositorio contiene este README, las instrucciones del PFM, las instrucciones de trabajo, los documentos de `docs/` y el archivo `.gitignore`. Todavía no contiene código de la aplicación, dependencias, pruebas ni configuración de despliegue.
 
-La documentación distingue las decisiones confirmadas, las propuestas de diseño y las funcionalidades implementadas. Están confirmados el alcance de una empresa con usuarios internos, los tres roles y sus permisos, las dos vistas React y las condiciones de cierre y actualización de progreso. El modelo de datos y los detalles técnicos siguen pendientes de concretar; la documentación no acredita su implementación.
+La documentación distingue las decisiones confirmadas, las propuestas de diseño y las funcionalidades implementadas. Están confirmados el alcance de una empresa con usuarios internos, los tres roles y sus permisos, las dos vistas React, los criterios de valoración, el historial con notas obligatorias de avance y las condiciones de cierre y actualización de progreso. El modelo de datos y los detalles técnicos siguen pendientes de concretar; la documentación no acredita su implementación.
 
 ## Marco académico
 
@@ -32,7 +32,7 @@ RiskTrack/
     ├── 05-modelo-datos.md
     ├── 06-arquitectura.md
     ├── 07-seguridad.md
-    └── 08-decisiones-mvp.md
+    ├── 08-decisiones-mvp.md
 ```
 
 ## Documentación
@@ -52,7 +52,7 @@ El alcance de RiskTrack consiste en un registro central de riesgos de TI que cub
 
 ## Secuencia prevista de desarrollo
 
-La implementación se organizará en cinco fases. Todas están pendientes. El alcance, los roles y las condiciones de cierre y actualización de progreso están confirmados en [02-requisitos.md](docs/02-requisitos.md) y [03-usuarios.md](docs/03-usuarios.md). Los detalles técnicos pendientes se concretarán antes de implementar las funciones que dependan de ellos.
+La implementación se organizará en cinco fases. Todas están pendientes. El alcance, los roles, los criterios de valoración e historial y las condiciones de cierre y actualización de progreso están confirmados en [02-requisitos.md](docs/02-requisitos.md), [03-usuarios.md](docs/03-usuarios.md) y [08-decisiones-mvp.md](docs/08-decisiones-mvp.md). Los detalles técnicos pendientes se concretarán antes de implementar las funciones que dependan de ellos.
 
 | Fase | Trabajo previsto | Comprobación del avance |
 | --- | --- | --- |
@@ -78,20 +78,22 @@ La aplicación y la elección de versiones y dependencias están pendientes. Tod
 
 El flujo principal previsto consiste en registrar un riesgo, evaluar probabilidad e impacto, calcular su prioridad, asignar un responsable, crear acciones de mitigación y seguir su progreso hasta reducirlo o cerrarlo.
 
-El ejemplo ficticio de demostración es «Acceso no autorizado a sistemas críticos», con probabilidad 4/5, impacto 5/5 y puntuación 20, clasificada como crítica. El riesgo se asigna a Laura, IT Security Manager, y se crea la acción «Implementar MFA para cuentas privilegiadas».
+El ejemplo ficticio de demostración será «Acceso no autorizado a sistemas críticos», con probabilidad 4/5, impacto 5/5 y puntuación 20, clasificada como crítica. Se asignará el riesgo a Laura, personaje ficticio con el puesto de IT Security Manager, y se creará la acción «Implementar MFA para cuentas privilegiadas» al 0%. Su progreso se actualizará después de iniciar el tratamiento, con una nota obligatoria por avance.
 
 El MVP incluirá dos vistas React: un registro filtrable y un dashboard de exposición calculado a partir de datos persistidos en Django. Cuando exista la aplicación, se incorporarán instrucciones verificadas por rol, acceso a la demostración y capturas reales.
 
-- Repositorio público en GitHub: publicación o confirmación pendiente.
+- Repositorio público en GitHub: [Pablorossl/RiskTrack](https://github.com/Pablorossl/RiskTrack).
 - URL pública de la aplicación: despliegue pendiente.
 
 ## Entrega del PFM
 
 | Entregable | Condiciones principales | Estado |
 | --- | --- | --- |
-| Repositorio GitHub | Código backend y frontend, README de instalación/configuración/uso, estructura coherente y commits progresivos. Se adopta la condición de repositorio público. | Pendiente. |
+| Repositorio GitHub | Código backend y frontend, README de instalación/configuración/uso, estructura coherente y commits progresivos. Se adopta la condición de repositorio público. | Repositorio público disponible; código, instrucciones ejecutables e historial de desarrollo pendientes. |
 | Aplicación desplegada | URL pública estable y funcional durante toda la revisión y defensa; no se exige dominio propio. | Pendiente. |
 | Memoria técnica | PDF o Word con los seis apartados de la guía, capturas, diagramas y ejemplos; redacción clara, formal y ordenada. | Documentación Markdown inicial; exportación y evidencias pendientes. |
 | Vídeo explicativo | Enlace accesible, máximo cinco minutos, problema, demostración, tecnologías y ejemplo real de integración React. | Pendiente. |
 
 Los archivos Markdown constituyen el material de trabajo para la memoria obligatoria en PDF o Word. La defensa tiene un máximo de veinte minutos y la nota mínima de aprobación es 7.0/10. Las condiciones completas de revisión, evaluación y reentrega se conservan en [INSTRUCCIONES-PFM.md](INSTRUCCIONES-PFM.md).
+
+La revisión actual y los criterios para acreditar cada requisito se recogen en [09-verificacion-pfm.md](docs/09-verificacion-pfm.md). El proyecto se encuentra en fase documental y todavía no está preparado para la entrega final.

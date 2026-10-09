@@ -14,6 +14,8 @@
 
 Todos los roles requieren autenticación y cada cuenta tendrá un solo rol de negocio. La representación técnica mediante grupos Django y la relación con el panel administrativo figuran como recomendaciones pendientes de confirmación en [08-decisiones-mvp.md](08-decisiones-mvp.md).
 
+La propuesta técnica utiliza el usuario estándar de Django y su admin para gestionar cuentas. Solo el rol Administrador tendrá acceso ordinario al panel, con los permisos necesarios para cuentas y roles, validando reasignaciones antes de desactivar. La pertenencia al rol no concederá privilegios de superusuario ni permitirá modificar libremente privilegios técnicos. Gestor y Responsable utilizarán las vistas de la aplicación. Estos controles están pendientes de implementación y verificación.
+
 Cualquier usuario activo con uno de estos tres roles podrá ser responsable de un riesgo o encargado de una acción. Recibir una asignación no cambia su rol ni concede permisos adicionales.
 
 Un puesto como «IT Security Manager» describe una función profesional. Laura, del ejemplo, podría tener el rol Responsable o Gestor según las acciones autorizadas; el nombre del puesto no concede permisos.
@@ -34,9 +36,11 @@ Un puesto como «IT Security Manager» describe una función profesional. Laura,
 
 El alcance de los permisos se aplicará tanto en las plantillas como en los datos que recibe React. El responsable no podrá modificar una acción ajena aunque pueda consultar el riesgo al que pertenece. La actualización del progreso y de las notas de avance solo estará habilitada en EN TRATAMIENTO; en EVALUADO se prepararán y asignarán las acciones.
 
+Cada avance requerirá una nota no vacía y conservará la anterior. Las evaluaciones y entradas del historial serán de consulta; una corrección se registrará como una nueva operación autorizada. Ningún rol dispondrá de operaciones de negocio para editar o borrar registros históricos.
+
 ## Gestión de acceso
 
-El administrador crea las cuentas, sin registro público. Solo usuarios activos podrán recibir nuevas asignaciones. El flujo de desactivación conservará el historial y resolverá las asignaciones abiertas mediante reasignación.
+El administrador creará las cuentas, sin registro público. Solo usuarios activos podrán recibir nuevas asignaciones. El flujo de desactivación conservará el historial y resolverá las asignaciones abiertas mediante reasignación. La definición operativa de estas asignaciones y su resolución respetando los estados del riesgo deberá concretarse antes de implementar la gestión de cuentas, según [08-decisiones-mvp.md](08-decisiones-mvp.md).
 
 La URL de la aplicación será pública para el PFM. El registro de riesgos requerirá acceso autenticado; la demostración utilizará datos ficticios y se facilitará acceso al equipo docente sin publicar secretos en el repositorio.
 
