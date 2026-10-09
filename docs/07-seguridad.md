@@ -1,6 +1,6 @@
 # 07. Seguridad y protección de datos
 
-**Estado:** este documento presenta los controles de seguridad propuestos para el diseño. Ninguno está implementado ni verificado todavía.
+**Estado:** este documento presenta los controles de acceso e integridad decididos para el MVP y las medidas de despliegue propuestas. Ninguno está implementado ni verificado todavía.
 
 **Referencia obligatoria:** [guía del PFM](../INSTRUCCIONES-PFM.md), «6. Seguridad y protección de datos» y criterio «Seguridad e integridad de datos» (15%).
 
@@ -33,7 +33,7 @@ El diseño previsto filtrará objetos y agregados antes de responder a React y r
 
 Las reglas confirmadas exigen calcular puntuación y nivel en Django, sin aceptar valores derivados enviados por el cliente, y conservar las evaluaciones anteriores. Completar MFA u otra acción no reducirá automáticamente el riesgo: el flujo previsto requerirá una reevaluación. Estos controles todavía no están implementados.
 
-Para mantener la consistencia, se propone guardar el cambio y su evento en una transacción, validar las condiciones de cierre y controlar operaciones concurrentes sobre el mismo riesgo. La comprobación deberá rechazar cierres sin reevaluación apta, con nivel ALTO o CRÍTICO, acciones incompletas o responsable inactivo, según [02-requisitos.md](02-requisitos.md). También deberá impedir cambios de acciones en MONITORIZACIÓN y cambios de datos, evaluaciones o acciones en CERRADO. Las funciones ordinarias no permitirán alterar el historial y las referencias se protegerán al desactivar usuarios. Estos controles siguen pendientes de implementación y prueba.
+Para mantener la consistencia, se ha decidido guardar el cambio y sus eventos con `transaction.atomic()` desde el primer flujo, validar las condiciones de cierre y controlar operaciones concurrentes sobre el mismo riesgo. La comprobación deberá rechazar cierres sin reevaluación apta, con nivel ALTO o CRÍTICO, acciones incompletas o responsable inactivo, según [02-requisitos.md](02-requisitos.md). También deberá impedir cambios de acciones en MONITORIZACIÓN y cambios de datos, evaluaciones o acciones en CERRADO. Las funciones ordinarias no permitirán alterar el historial. La desactivación exigirá resolver riesgos abiertos y acciones sin completar, conservando las referencias de acciones completadas y registros cerrados, según [03-usuarios.md](03-usuarios.md). Se comprobará que una asignación concurrente no deje trabajo pendiente a cargo de una cuenta inactiva. Los cambios de rol se aplicarán a las siguientes peticiones de las sesiones existentes; el admin limitará privilegios técnicos y protegerá la continuidad del acceso administrativo. Estos controles siguen pendientes de implementación y prueba.
 
 El historial confirmado como requisito permitirá seguir el proceso de negocio y conservará actor, fecha, cambios y notas de avance obligatorias, sin sustituir los registros anteriores. Su acceso tendrá el mismo alcance que la ficha del riesgo. Deberá comprobarse que una nota vacía no modifica el progreso ni deja un avance parcial. No se plantea como un registro forense inalterable. Su implementación y estas comprobaciones están pendientes; la memoria explicará su alcance y sus limitaciones.
 

@@ -82,7 +82,7 @@ Estas comprobaciones permitirán evaluar el funcionamiento de la solución. La d
 
 ## Alcance y límites del MVP
 
-El alcance confirmado comprende el registro central, la evaluación, la prioridad, la asignación, las acciones, la monitorización y el cierre. El producto mínimo viable (MVP) cubre una empresa, usuarios internos y dos vistas React, con datos ficticios para la demostración. Los roles, los criterios de valoración e historial y las condiciones de cierre y actualización de progreso están confirmados; los detalles pendientes se mantienen identificados como propuestas en los documentos de diseño.
+El alcance confirmado comprende el registro central, la evaluación, la prioridad, la asignación, las acciones, la monitorización y el cierre. El producto mínimo viable (MVP) cubre una empresa, usuarios internos y dos vistas React, con datos ficticios para la demostración. Los roles, los criterios de valoración e historial y las condiciones de cierre y actualización de progreso están confirmados; la base técnica y la gestión de cuentas están decididas y los detalles de implementación pendientes se identifican en los documentos de diseño.
 
 Quedan fuera del MVP la gestión de múltiples empresas, los adjuntos, las notificaciones, los módulos de cumplimiento normativo, las auditorías formales, las integraciones externas y la ejecución automatizada de medidas técnicas. La aplicación documentará y seguirá las acciones que se registren; su implantación en sistemas externos queda fuera del alcance.
 

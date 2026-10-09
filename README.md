@@ -4,9 +4,9 @@ RiskTrack es un Proyecto Final de Máster en Desarrollo Full Stack orientado a r
 
 ## Estado del proyecto
 
-Actualmente están documentados el problema, el alcance confirmado y una propuesta de diseño técnico. El repositorio contiene este README, las instrucciones del PFM, las instrucciones de trabajo, los documentos de `docs/` y el archivo `.gitignore`. Todavía no contiene código de la aplicación, dependencias, pruebas ni configuración de despliegue.
+Actualmente están documentados el problema, el alcance confirmado y la base técnica adoptada. El repositorio contiene este README, las instrucciones del PFM, las instrucciones de trabajo, los documentos de `docs/` y el archivo `.gitignore`. Todavía no contiene código de la aplicación, dependencias, pruebas ni configuración de despliegue.
 
-La documentación distingue las decisiones confirmadas, las propuestas de diseño y las funcionalidades implementadas. Están confirmados el alcance de una empresa con usuarios internos, los tres roles y sus permisos, las dos vistas React, los criterios de valoración, el historial con notas obligatorias de avance y las condiciones de cierre y actualización de progreso. El modelo de datos y los detalles técnicos siguen pendientes de concretar; la documentación no acredita su implementación.
+La documentación distingue las decisiones confirmadas, las propuestas de diseño y las funcionalidades implementadas. Están confirmados el alcance de una empresa con usuarios internos, los tres roles y sus permisos, las dos vistas React, los criterios de valoración, el historial con notas obligatorias de avance y las condiciones de cierre y actualización de progreso. También se han decidido la gestión de cuentas y la base técnica: Django 5.2 LTS con Python 3.12, PostgreSQL 17, usuario estándar y grupos, formularios Django y dos vistas React 19 con Vite 8 y Node.js 24 LTS. Los campos definitivos, las dependencias exactas y los contratos JSON se concretarán durante la implementación; la documentación no acredita su funcionamiento.
 
 ## Marco académico
 
@@ -32,7 +32,7 @@ RiskTrack/
     ├── 05-modelo-datos.md
     ├── 06-arquitectura.md
     ├── 07-seguridad.md
-    ├── 08-decisiones-mvp.md
+    └── 08-decisiones-mvp.md
 ```
 
 ## Documentación
@@ -46,7 +46,7 @@ RiskTrack/
 | [05-modelo-datos.md](docs/05-modelo-datos.md) | Entidades, relaciones, restricciones y persistencia propuestas. |
 | [06-arquitectura.md](docs/06-arquitectura.md) | Tecnologías y justificación, componentes, integración React y despliegue previsto. |
 | [07-seguridad.md](docs/07-seguridad.md) | Diseño de autenticación, validación, CSRF/XSS, contraseñas, secretos, HTTPS y copias de seguridad. |
-| [08-decisiones-mvp.md](docs/08-decisiones-mvp.md) | Decisiones confirmadas de alcance y negocio, recomendaciones técnicas y consecuencias para la implementación. |
+| [08-decisiones-mvp.md](docs/08-decisiones-mvp.md) | Decisiones de alcance, negocio, gestión de cuentas y base técnica, con consecuencias para la implementación. |
 
 El alcance de RiskTrack consiste en un registro central de riesgos de TI que cubra el ciclo **Identificar → Evaluar → Priorizar → Asignar → Tratar → Monitorizar → Cerrar**.
 
@@ -56,9 +56,9 @@ La implementación se organizará en cinco fases. Todas están pendientes. El al
 
 | Fase | Trabajo previsto | Comprobación del avance |
 | --- | --- | --- |
-| 1. Estructura Django y autenticación | Crear la base del proyecto, definir dependencias y configuración, e incorporar plantillas, sesiones y permisos por rol. | Arranque reproducible, inicio y cierre de sesión y rechazo de accesos no autorizados. |
-| 2. Riesgos y evaluaciones | Incorporar modelos y migraciones, registro de riesgos, formularios, evaluación y cálculo de prioridad en el backend. | Persistencia tras recargar, rechazo de valores inválidos y cálculo 4 × 5 = 20 como CRÍTICO. |
-| 3. Acciones e historial | Incorporar asignaciones, acciones de tratamiento, progreso, evaluaciones sucesivas y transiciones hasta el cierre documentado. | Flujo de tratamiento y cierre con permisos adecuados y conservación del historial. |
+| 1. Estructura Django y autenticación | Crear la base del proyecto con PostgreSQL, fijar dependencias y configuración, e incorporar plantillas, sesiones y permisos por rol. | Arranque reproducible, inicio y cierre de sesión y rechazo de accesos no autorizados. |
+| 2. Riesgos, evaluaciones e historial inicial | Incorporar Riesgo, Evaluación y Evento con sus migraciones, formularios, asignación de responsable, cálculo de prioridad e historial consultable desde la creación, edición y primera evaluación. | Persistencia tras recargar, rechazo de valores inválidos, cálculo 4 × 5 = 20 como CRÍTICO y guardado conjunto de cada operación y sus eventos. |
+| 3. Tratamiento y gestión de cuentas | Incorporar acciones, progreso y transiciones hasta el cierre; ampliar el historial existente y completar las reglas de reasignación, desactivación y cambio de rol. | Flujo de tratamiento y cierre, gestión de cuentas y operaciones concurrentes con permisos adecuados e historial conservado. |
 | 4. Integración React | Incorporar el registro filtrable y el dashboard mediante datos reales de Django, con estados de carga, error y ausencia de datos. | Ambas vistas reflejan cambios persistidos y respetan el alcance de cada usuario. |
 | 5. Despliegue y evidencias | Desplegar en una URL pública con HTTPS, verificar configuración y restauración de copias, y preparar repositorio público, memoria PDF o Word y vídeo de hasta cinco minutos. | Flujo completo en la URL pública, instalación desde un clon limpio y entregables accesibles con evidencias reales. |
 
@@ -66,7 +66,7 @@ Cada fase podrá dividirse en varios commits significativos. La documentación y
 
 ## Instalación y configuración
 
-La aplicación y la elección de versiones y dependencias están pendientes. Todavía no existen comandos de instalación o ejecución verificables. Una vez incorporado el código, este apartado deberá incluir:
+La base técnica está decidida en [06-arquitectura.md](docs/06-arquitectura.md); la aplicación, los parches exactos y la instalación de dependencias siguen pendientes. Todavía no existen comandos de instalación o ejecución verificables. Una vez incorporado el código, este apartado deberá incluir:
 
 1. Requisitos de sistema y versiones de Python, Django, Node.js y React utilizadas.
 2. Instalación de dependencias del backend y frontend desde un clon limpio.
@@ -96,4 +96,4 @@ El MVP incluirá dos vistas React: un registro filtrable y un dashboard de expos
 
 Los archivos Markdown constituyen el material de trabajo para la memoria obligatoria en PDF o Word. La defensa tiene un máximo de veinte minutos y la nota mínima de aprobación es 7.0/10. Las condiciones completas de revisión, evaluación y reentrega se conservan en [INSTRUCCIONES-PFM.md](INSTRUCCIONES-PFM.md).
 
-La revisión actual y los criterios para acreditar cada requisito se recogen en [09-verificacion-pfm.md](docs/09-verificacion-pfm.md). El proyecto se encuentra en fase documental y todavía no está preparado para la entrega final.
+El proyecto se encuentra en fase documental y todavía no está preparado para la entrega final.

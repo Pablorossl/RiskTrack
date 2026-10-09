@@ -8,7 +8,7 @@
 
 | Entidad | Propósito | Atributos principales |
 | --- | --- | --- |
-| Usuario | Identidad y acceso mediante el modelo estándar `User` de Django, propuesto para el MVP. | Identificador, nombre, identificador de acceso, estado activo y grupo de rol. Contraseña gestionada mediante hashing Django. |
+| Usuario | Identidad y acceso mediante el modelo estándar `User` de Django, elegido para el MVP. | Identificador, nombre, identificador de acceso, estado activo y grupo de rol. Contraseña gestionada mediante hashing Django. |
 | Riesgo | Registro central de un riesgo de TI. | Identificador, título, descripción, estado, responsable opcional hasta asignación, creador, fechas de creación y actualización, fecha de última entrada en monitorización y fecha, motivo y evaluación de referencia del cierre cuando corresponda. |
 | Evaluación | Valoración de un riesgo en un momento dado. | Identificador, riesgo, probabilidad, impacto, justificación, evaluador y fecha. Puntuación calculada como probabilidad × impacto. |
 | Acción de tratamiento | Trabajo de mitigación vinculado al riesgo. | Identificador, riesgo, título, descripción, encargado, fecha objetivo, progreso, estado y fechas de creación y actualización. |
@@ -33,7 +33,7 @@ erDiagram
     EVALUACION o|--o| RIESGO : justifica_cierre
 ```
 
-Un riesgo recién identificado puede carecer de responsable y evaluaciones. Cada acción tendrá un encargado. Los eventos se registrarán para creación y edición del riesgo, evaluaciones, asignaciones, creación y edición de acciones, avances y cambios de estado; su detalle deberá limitarse a lo necesario para explicar la evolución. El evento de cierre conservará también el actor y la referencia a la evaluación utilizada. La relación de cierre será opcional mientras el riesgo esté abierto y obligatoria cuando esté cerrado.
+El modelo Evento se incorporará en la misma fase que Riesgo y Evaluación, y la creación del primer riesgo ya conservará su evento. Un riesgo recién identificado puede carecer de responsable y evaluaciones. Cada acción tendrá un encargado. Los eventos se registrarán para creación y edición del riesgo, evaluaciones, asignaciones, creación y edición de acciones, avances y cambios de estado; su detalle deberá limitarse a lo necesario para explicar la evolución. El evento de cierre conservará también el actor y la referencia a la evaluación utilizada. La relación de cierre será opcional mientras el riesgo esté abierto y obligatoria cuando esté cerrado.
 
 El diseño de [historial](08-decisiones-mvp.md) conservará cada nota de avance obligatoria en un evento vinculado a su acción, junto con el progreso anterior y nuevo. No se sobrescribirá una nota al registrar otro avance. Los cambios de datos conservarán los campos afectados y sus valores anteriores y nuevos. Las referencias a acción y evaluación, cuando existan, deberán pertenecer al mismo riesgo del evento. Estas reglas están confirmadas; sus modelos y validaciones siguen pendientes de implementación.
 
@@ -43,7 +43,7 @@ En este diseño, probabilidad e impacto serán enteros entre 1 y 5. Django deber
 
 Cada evaluación deberá conservarse sin sobrescribirla, editarla ni eliminarla mediante operaciones de negocio. La fecha se asignará en el servidor. La evaluación vigente será la más reciente por fecha y, en caso de empate, identificador. La puntuación actual se derivará de esa evaluación para evitar copias contradictorias. Sin evaluación, el riesgo mostrará SIN EVALUAR. Los descriptores y el horizonte confirmado de doce meses se definen en [02-requisitos.md](02-requisitos.md).
 
-La aptitud para cierre se comprobará frente a la última entrada en MONITORIZACIÓN y al último cambio de título, descripción o responsable. El modelo y los eventos deberán permitir determinar ese orden, incluidos los empates de fecha, sin basarse únicamente en la fecha general de actualización. El mecanismo técnico concreto sigue pendiente de implementación. El cierre conservará una referencia a la evaluación que lo justificó; deberá pertenecer al mismo riesgo y ser la vigente en ese momento.
+La aptitud para cierre se comprobará frente a la última entrada en MONITORIZACIÓN y al último cambio de título, descripción o responsable. El modelo y los eventos deberán permitir determinar ese orden, incluidos los empates de fecha, sin basarse únicamente en la fecha general de actualización. Se usará el orden de identificadores de eventos del mismo riesgo, creados bajo bloqueo de ese riesgo y dentro de la transacción de la operación, según [06-arquitectura.md](06-arquitectura.md). Su implementación sigue pendiente. El cierre conservará una referencia a la evaluación que lo justificó; deberá pertenecer al mismo riesgo y ser la vigente en ese momento.
 
 En el diseño propuesto, completar acciones no modificará automáticamente la evaluación. La nueva puntuación requerirá una valoración explícita del gestor.
 
@@ -55,17 +55,17 @@ Para la implementación, se proponen las siguientes restricciones y mecanismos d
 - Exigir nota de avance no vacía y conservar cada una vinculada a su acción, actor y cambio de progreso.
 - Validar en el backend y mediante restricciones de base de datos los rangos de probabilidad, impacto y progreso.
 - Validar coherencia entre progreso y estado de la acción: 0% PENDIENTE, 1–99% EN CURSO, 100% COMPLETADA.
-- Validar asignaciones a usuarios activos y transiciones según [02-requisitos.md](02-requisitos.md).
+- Validar asignaciones a usuarios activos y transiciones según [02-requisitos.md](02-requisitos.md). Conservar encargados inactivos en acciones completadas, pero exigir reasignación antes de volver a progreso inferior al 100%.
 - Crear acciones con progreso 0%; permitir preparar y asignar acciones en EVALUADO y EN TRATAMIENTO, pero actualizar progreso y notas de avance únicamente en EN TRATAMIENTO.
 - Bloquear cambios de acciones en MONITORIZACIÓN y de datos, evaluaciones y acciones en CERRADO, conforme al MVP confirmado sin reapertura.
 - Validar cierre únicamente desde MONITORIZACIÓN, con responsable activo, acciones completas, reevaluación apta de nivel BAJO o MEDIO y motivo.
-- Guardar en una transacción la operación y su evento para evitar un cambio sin historial.
-- Serializar las operaciones que compitan sobre un riesgo o acción para impedir que dos cambios concurrentes incumplan las condiciones de cierre; mecanismo concreto pendiente de implementación.
+- Guardar desde el primer flujo la operación y sus eventos con `transaction.atomic()` para evitar un cambio sin historial.
+- Usar `select_for_update()` sobre el riesgo en sus mutaciones y las de sus acciones; coordinar también usuarios al asignar o desactivar. Las operaciones y pruebas de concurrencia están pendientes, con el criterio definido en arquitectura.
 - Proteger referencias de historial frente a eliminaciones en cascada. Se propone desactivar usuarios y cerrar riesgos conservando los registros, sin ofrecer eliminación de negocio en el MVP.
 
 ## Persistencia, migraciones y datos de demostración
 
-Se propone SQLite para el primer arranque local y PostgreSQL antes de validar las operaciones concurrentes de tratamiento y cierre y para el entorno desplegado, con la justificación recogida en [06-arquitectura.md](06-arquitectura.md). La elección definitiva y sus dependencias siguen pendientes. Las primeras comprobaciones en SQLite no acreditarán el control de concurrencia previsto. Cuando existan migraciones Django, se conservarán en Git y se documentará su ejecución.
+Se adopta PostgreSQL 17 con Psycopg 3 desde el primer arranque, en desarrollo, pruebas y producción, con la justificación recogida en [06-arquitectura.md](06-arquitectura.md). La configuración y las dependencias exactas siguen pendientes de implementación. La concurrencia se comprobará con este mismo motor. Cuando existan migraciones Django, se conservarán en Git y se documentará su ejecución.
 
 Se prepararán datos ficticios reproducibles con el ejemplo de MFA, riesgos sin evaluar y evaluaciones sucesivas. Las contraseñas, credenciales y datos personales reales permanecerán fuera del repositorio.
 

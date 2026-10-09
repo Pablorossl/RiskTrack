@@ -1,6 +1,6 @@
 # 02. Requisitos
 
-**Estado:** las obligaciones académicas están identificadas y el alcance, roles, criterios de valoración, historial y reglas de seguimiento están confirmados. El modelo de datos y la base técnica siguen siendo propuestas. La aplicación todavía no está implementada ni se ha acreditado el cumplimiento de las obligaciones.
+**Estado:** las obligaciones académicas están identificadas y el alcance, roles, criterios de valoración, historial y reglas de seguimiento están confirmados. La base técnica y la gestión de cuentas están decididas; los campos definitivos del modelo y los contratos JSON siguen pendientes. La aplicación todavía no está implementada ni se ha acreditado el cumplimiento de las obligaciones.
 
 **Fuente:** [instrucciones completas del PFM](../INSTRUCCIONES-PFM.md). Los identificadores siguientes son referencias internas; no sustituyen la guía ni alteran su alcance.
 
@@ -21,7 +21,7 @@ El apartado de entrega admite repositorio público o compartido con el equipo do
 | --- | --- | --- |
 | Definición del problema: contexto, carencias, impacto y solución | [01-problema.md](01-problema.md) | Necesidad fundamentada en fuentes; escenario ilustrativo hipotético y validación funcional pendiente. |
 | Reflexión: aportación y eficiencia | [01-problema.md](01-problema.md) | Beneficios previstos documentados; evidencias pendientes. |
-| Tecnologías utilizadas y justificación | [06-arquitectura.md](06-arquitectura.md) | Django y React exigidos; arquitectura propuesta. |
+| Tecnologías utilizadas y justificación | [06-arquitectura.md](06-arquitectura.md) | Django y React exigidos; base técnica adoptada, pendiente de implementación. |
 | Tipos de usuarios y acciones permitidas | [03-usuarios.md](03-usuarios.md) | Roles y permisos confirmados; implementación pendiente. |
 | Casos de uso por usuario, flujos, resultados y errores | [04-casos-de-uso.md](04-casos-de-uso.md) | Flujos documentados; validación en la aplicación pendiente. |
 | Seguridad y protección de datos | [07-seguridad.md](07-seguridad.md) | Medidas pendientes de implementar y verificar. |
@@ -111,7 +111,7 @@ Las transiciones no enumeradas se rechazarán. Completar acciones no provocará 
 
 ### Acciones y progreso
 
-El progreso de una acción será un entero entre 0 y 100 y determinará su estado: **PENDIENTE (0%), EN CURSO (1–99%) o COMPLETADA (100%)**. El backend derivará ese estado del progreso. Completar una acción no modificará automáticamente la evaluación del riesgo.
+El progreso de una acción será un entero entre 0 y 100 y determinará su estado: **PENDIENTE (0%), EN CURSO (1–99%) o COMPLETADA (100%)**. El backend derivará ese estado del progreso. Completar una acción no modificará automáticamente la evaluación del riesgo. Toda acción sin completar deberá tener encargado activo; para bajar del 100% una acción con encargado inactivo se deberá reasignar primero, en EN TRATAMIENTO.
 
 Las acciones se crearán con progreso 0% y estado PENDIENTE. El gestor o administrador podrá prepararlas, asignarlas y editar título, descripción, encargado y fecha objetivo en EVALUADO y EN TRATAMIENTO. La actualización del progreso y las notas de avance solo se permitirá en EN TRATAMIENTO, también para gestor y administrador. El responsable solo podrá actualizar el progreso y las notas de sus propias acciones en ese estado. Así se evita completar todas las acciones en EVALUADO y bloquear la entrada en tratamiento, que exige al menos una acción pendiente.
 
@@ -121,7 +121,7 @@ En MONITORIZACIÓN las acciones quedarán bloqueadas para cambios; el gestor o a
 
 Cada avance exigirá una nota de texto no vacía que explique el trabajo realizado o la corrección, también al alcanzar el 100%. El backend rechazará notas vacías o formadas solo por espacios, sin modificar el progreso ni registrar un avance parcial. Cada nota se conservará junto con acción, actor, fecha del servidor y progreso anterior y nuevo; los avances posteriores no la sobrescribirán.
 
-El historial se registrará automáticamente para creación y edición del riesgo, evaluaciones, asignaciones, creación y edición de acciones, avances, transiciones y cierre. Conservará actor, fecha y detalle del cambio, con valores anteriores y nuevos y referencias a acción o evaluación cuando corresponda. Las entradas anteriores no se editarán ni borrarán mediante operaciones de negocio. Se mantendrán disponibles al cerrar el riesgo o desactivar usuarios y tendrán el mismo alcance de consulta que la ficha. El detalle de las operaciones figura en [08-decisiones-mvp.md](08-decisiones-mvp.md).
+El modelo de historial se incorporará junto a Riesgo y Evaluación desde el primer flujo de negocio. Cada operación y sus eventos se guardarán conjuntamente. El historial se registrará automáticamente para creación y edición del riesgo, evaluaciones, asignaciones, creación y edición de acciones, avances, transiciones y cierre. Conservará actor, fecha y detalle del cambio, con valores anteriores y nuevos y referencias a acción o evaluación cuando corresponda. Las entradas anteriores no se editarán ni borrarán mediante operaciones de negocio. Se mantendrán disponibles al cerrar el riesgo o desactivar usuarios y tendrán el mismo alcance de consulta que la ficha. El detalle de las operaciones figura en [08-decisiones-mvp.md](08-decisiones-mvp.md).
 
 ### Condiciones de cierre
 
@@ -159,6 +159,19 @@ Un riesgo CERRADO quedará disponible para consulta, conservará su historial y 
 
 Estos ejemplos describen el comportamiento requerido para el MVP; su ejecución y sus evidencias siguen pendientes.
 
+## Gestión de cuentas
+
+Se adopta la [regla operativa de cuentas](03-usuarios.md): antes de desactivar hay que reasignar los riesgos abiertos y las acciones sin completar de riesgos abiertos. Las acciones completadas, los riesgos cerrados y las autorías conservarán sus referencias. Un cambio de rol conservará asignaciones y aplicará los nuevos permisos en cada petición. Se mantendrá un rol por cuenta y al menos un Administrador activo, sin autodesactivación ni cambio del propio rol.
+
+| Situación | Resultado esperado, pendiente de verificar |
+| --- | --- |
+| Desactivar una cuenta con riesgo abierto a su cargo o acción sin completar. | Rechazo con indicación de las asignaciones que deben resolverse. |
+| Cuenta con acciones completadas como únicas asignaciones, incluso en MONITORIZACIÓN. | Desactivación permitida si cumple las reglas de acceso administrativo; acciones e historial sin cambios. |
+| Reasignar el responsable de un riesgo en MONITORIZACIÓN. | Evento de reasignación y exigencia de otra evaluación antes del cierre; acciones bloqueadas sin cambios. |
+| Bajar del 100% una acción cuyo encargado está inactivo. | Rechazo hasta reasignarla a una cuenta activa en EN TRATAMIENTO. |
+| Cambiar Gestor por Responsable en una cuenta con sesión iniciada. | Asignaciones conservadas y siguientes peticiones limitadas a los permisos de Responsable. |
+| Asignación simultánea a una desactivación. | No queda trabajo abierto asignado a una cuenta inactiva; una de las operaciones debe rechazarse tras comprobar el estado vigente. |
+
 ## Requisitos no funcionales y límites del MVP
 
 | ID | Requisito de diseño | Comprobación prevista |
@@ -186,4 +199,4 @@ La entrega debe incluir cuatro elementos imprescindibles: repositorio GitHub con
 
 La guía completa contiene las condiciones de revisión, autoría, defensa de hasta veinte minutos, feedback y reentrega que también deben respetarse.
 
-La correspondencia entre requisitos, documentación y evidencias de entrega se recoge en [09-verificacion-pfm.md](09-verificacion-pfm.md). La cobertura documental no acredita por sí sola la implementación ni el cumplimiento final.
+La cobertura documental no acredita por sí sola la implementación ni el cumplimiento final.
